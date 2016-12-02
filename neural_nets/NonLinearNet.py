@@ -6,9 +6,14 @@ class NonLinearNet(object):
     
   def __init__(self, input_size, hidden_size, output_size, std=1e-4):
     self.params = {}
-    self.params['W1'] = std * np.random.randn(input_size, hidden_size)
+    # ranf init the weights
+    self.params['W1'] = std * np.random.ranf((input_size, hidden_size))
+    self.params['W2'] = std * np.random.ranf((hidden_size, output_size))
+    
+    # randn init the weights
+    #self.params['W1'] = std * np.random.randn(input_size, hidden_size)
+    #self.params['W2'] = std * np.random.randn(hidden_size, output_size)
     self.params['b1'] = np.zeros(hidden_size)
-    self.params['W2'] = std * np.random.randn(hidden_size, output_size)
     self.params['b2'] = np.zeros(output_size)
     self.params['l1'] = np.zeros((input_size, hidden_size))
     
@@ -69,7 +74,7 @@ class NonLinearNet(object):
   def train(self, X, y, X_val, y_val,
             learning_rate=1e-3, learning_rate_decay=0.95,
             reg=1e-5, num_iters=100,
-            batch_size=500, verbose=False):
+            batch_size=1000, verbose=False):
     num_train = X.shape[0]
     iterations_per_epoch = max(num_train / batch_size, 1)
 
@@ -115,6 +120,8 @@ class NonLinearNet(object):
     print 'y get:'
     print scores[:10]
     
+    #print self.params['W1']
+    #print self.params['W2']
     return loss_history
 
 
